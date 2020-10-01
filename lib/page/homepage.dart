@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hanyang_teaching/page/clubInfopagestart.dart';
 import 'package:flutter_hanyang_teaching/page/majorinfostart.dart';
+import 'package:flutter_hanyang_teaching/page/outgoingactivitypage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -24,8 +26,8 @@ class _HomePageState extends State<HomePage> {
               crossAxisCount: 2,
               children: [
                 createGridItem('학과게시판', Colors.cyan, Icons.dashboard, MajorInfoStart()),
-                createGridItem('대외활동', Colors.deepPurple, Icons.local_activity, MajorInfoStart()),
-                createGridItem('중앙동아리', Colors.orange[300], Icons.group, MajorInfoStart()),
+                createGridItem('대외활동', Colors.deepPurple, Icons.local_activity, OutGoingActivityPage()),
+                createGridItem('중앙동아리', Colors.orange[300], Icons.group, ClubInfoPage()),
                 createGridItem('자격증', Colors.pink, Icons.credit_card, MajorInfoStart()),
                 createGridItem('교양', Colors.teal[900], Icons.list, MajorInfoStart()),
               ],

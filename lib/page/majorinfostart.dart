@@ -73,7 +73,7 @@ class _MajorInfoStartState extends State<MajorInfoStart>{
                       });
                 } else {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => MajorInfoPage(_selectedMajor)));
+                      builder: (context) => MajorInfoPage(_selectedCollege, _selectedMajor)));
                 }
               },
               color: Colors.amber,
