@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OutGoingActivityWritePage extends StatefulWidget{
   @override
@@ -8,6 +9,10 @@ class OutGoingActivityWritePage extends StatefulWidget{
 class _OutGoingActivityWritePageState extends State<OutGoingActivityWritePage>{
   var _categories = ["분야 선택..", "공학", "예술", "문학", "서포터즈"];
   var _selectedCategory = "분야 선택..";
+
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _contentController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +47,8 @@ class _OutGoingActivityWritePageState extends State<OutGoingActivityWritePage>{
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '제목',
-                  )
+                  ),
+                controller: _titleController,
               ),
             ),
             Expanded(
@@ -53,7 +59,8 @@ class _OutGoingActivityWritePageState extends State<OutGoingActivityWritePage>{
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '내용',
-                  )
+                  ),
+                  controller: _contentController,
                 ),
               ),
             ),
@@ -62,6 +69,18 @@ class _OutGoingActivityWritePageState extends State<OutGoingActivityWritePage>{
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.send),
+        onPressed: (){
+          if(_selectedCategory != '분야 선택..' && _titleController.text.isNotEmpty && _contentController.text.isNotEmpty){
+            FirebaseFirestore.instance.collection('activities').add({
+              'category': _selectedCategory,
+              'title': _titleController.text,
+              'content': _contentController.text,
+              'date': Timestamp.now(),
+            });
+            _titleController.clear();
+            _contentController.clear();
+          }
+        },
       ),
     );
   }
