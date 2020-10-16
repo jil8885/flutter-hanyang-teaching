@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ClassReviewWritePage extends StatefulWidget {
-  ClassReviewWritePage(this.major);
+class CircleReviewWritePage extends StatefulWidget {
+  CircleReviewWritePage(this.major);
   final String major;
   @override
-  State<StatefulWidget> createState() => _ClassReviewWritePageState(major);
+  State<StatefulWidget> createState() => _CircleReviewWritePageState(major);
 }
 
-class _ClassReviewWritePageState extends State<ClassReviewWritePage> {
+class _CircleReviewWritePageState extends State<CircleReviewWritePage> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
   TextEditingController _subjectController = TextEditingController();
-  _ClassReviewWritePageState(this.major);
+  _CircleReviewWritePageState(this.major);
   final String major;
   @override
   Widget build(BuildContext context) {

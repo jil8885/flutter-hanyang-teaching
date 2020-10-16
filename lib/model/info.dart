@@ -24,6 +24,7 @@ class InfoModel {
         .map((e) => e.majors)
         .expand((element) => element)
         .map((e) => Major.fromJson(e))
+        .where((element) => element.name == major)
         .map((e) => e.circles)
         .expand((element) => element)
         .toList();

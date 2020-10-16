@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hanyang_teaching/page/classreviewpage.dart';
+import 'package:flutter_hanyang_teaching/page/circlereviewpage.dart';
 import 'package:flutter_hanyang_teaching/page/professorinfo.dart';
 import 'package:flutter_hanyang_teaching/page/trackpdfpage.dart';
 
@@ -35,12 +35,10 @@ class _MajorInfoPageState extends State<MajorInfoPage> {
               children: [
                 createGridItem(
                     '전공 트랙', Colors.cyan, Icons.map, TrackPDFPage(major)),
-                createGridItem('전공 수강평', Colors.deepPurple, Icons.class_,
-                    ClassReviewPage(major)),
                 createGridItem('교수님 연구분야', Colors.orange[300],
                     Icons.people_outline, ProfessorInfoPage(college, major)),
-                createGridItem(
-                    '학회 정보', Colors.pink, Icons.group, TrackPDFPage(major)),
+                createGridItem('학회 정보', Colors.pink, Icons.group,
+                    CircleReviewPage(college, major)),
                 createGridItem('과 취업현황', Colors.teal[900], Icons.work,
                     TrackPDFPage(major)),
                 createGridItem('선배와의 1대1 연락', Colors.green, Icons.phone,
