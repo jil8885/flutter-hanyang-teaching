@@ -19,7 +19,7 @@ class _ClubReviewWritePageState extends State<ClubReviewWritePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("교양 과목 후기 작성"),
+        title: Text("동아리 후기 작성"),
       ),
       body: Container(
         child: Column(
