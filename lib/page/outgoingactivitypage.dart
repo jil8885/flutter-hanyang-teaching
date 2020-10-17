@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hanyang_teaching/page/outgoingactivitywrite.dart';
-import 'package:intl/intl.dart';
 
 class OutGoingActivityPage extends StatefulWidget {
   @override
@@ -9,17 +8,9 @@ class OutGoingActivityPage extends StatefulWidget {
 }
 
 class _OutGoingActivityPageState extends State<OutGoingActivityPage> {
-  bool engineeringVal = false;
-  bool artVal = false;
-  bool literatureVal = false;
-  bool supportersVal = false;
 
-  List<String> _needToFindCat = ['공학', '문학', '예술', '서포터즈'];
-  String timestampToStrDateTime(Timestamp ts) {
-    return DateFormat('yyyy-MM-dd\nHH:mm')
-        .format(DateTime.fromMillisecondsSinceEpoch(ts.millisecondsSinceEpoch))
-        .toString();
-  }
+  List<String> _needToFindCat = ['공학', '문학', '예술', '공모전','서포터즈'];
+  String _selectedCat = '공학';
 
   @override
   Widget build(BuildContext context) {
@@ -27,98 +18,49 @@ class _OutGoingActivityPageState extends State<OutGoingActivityPage> {
       appBar: AppBar(
         title: Text("대외활동 정보"),
       ),
-      body: Container(
-        padding: EdgeInsets.only(top: 10.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("공학"),
-                    Checkbox(
-                      value: engineeringVal,
-                      onChanged: (bool value) {
-                        setState(() {
-                          engineeringVal = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("문학"),
-                    Checkbox(
-                      value: literatureVal,
-                      onChanged: (bool value) {
-                        setState(() {
-                          literatureVal = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("예술"),
-                    Checkbox(
-                      value: artVal,
-                      onChanged: (bool value) {
-                        setState(() {
-                          artVal = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("서포터즈"),
-                    Checkbox(
-                      value: supportersVal,
-                      onChanged: (bool value) {
-                        setState(() {
-                          supportersVal = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
-              ],
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButton<String>(
+              isExpanded: true,
+              items: _needToFindCat.map((String dropDownStringItem){
+                return DropdownMenuItem<String>(
+                  value: dropDownStringItem,
+                  child: Text(dropDownStringItem),
+                );
+              }).toList(),
+              onChanged: (value) => _onSelectedCat(value),
+              value: _selectedCat,
             ),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('activities')
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) return Text('조회된 정보가 없습니다');
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Text('로딩중입니다.');
-                    default:
-                      return ListView(
-                        children:
-                            snapshot.data.docs.map((DocumentSnapshot document) {
-                          Timestamp ts = document['date'];
-                          String dt = timestampToStrDateTime(ts);
-                          return Card(
-                            elevation: 2,
-                            child: InkWell(
+          ),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('activity')
+                  .where("category", isEqualTo: _selectedCat)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) return Text('조회된 정보가 없습니다');
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Center(child: Text('로딩중입니다.'));
+                  default:
+                    return ListView(
+                      children:
+                      snapshot.data.docs.map((DocumentSnapshot document) {
+                        return Card(
+                          elevation: 2,
+                          child: InkWell(
                               child: Container(
                                 padding: const EdgeInsets.all(8),
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Text(
                                           document['title'],
@@ -128,33 +70,27 @@ class _OutGoingActivityPageState extends State<OutGoingActivityPage> {
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        Text(
-                                          dt.toString(),
-                                          style: TextStyle(
-                                              color: Colors.grey[600]),
-                                        ),
                                       ],
                                     ),
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        document['category'],
+                                        document['content'],
                                         style: TextStyle(color: Colors.black54),
                                       ),
                                     )
                                   ],
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList(),
-                      );
-                  }
-                },
-              ),
-            )
-          ],
-        ),
+                              onTap: () {}),
+                        );
+                      }).toList(),
+                    );
+                }
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.create),
@@ -166,5 +102,11 @@ class _OutGoingActivityPageState extends State<OutGoingActivityPage> {
         },
       ),
     );
+  }
+
+  void _onSelectedCat(String value){
+    setState(() {
+      _selectedCat = value;
+    });
   }
 }

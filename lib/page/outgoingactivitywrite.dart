@@ -7,7 +7,7 @@ class OutGoingActivityWritePage extends StatefulWidget{
 }
 
 class _OutGoingActivityWritePageState extends State<OutGoingActivityWritePage>{
-  var _categories = ["분야 선택..", "공학", "예술", "문학", "서포터즈"];
+  var _categories = ["분야 선택..", "공학", "예술", "문학", '공모전', "서포터즈"];
   var _selectedCategory = "분야 선택..";
 
   TextEditingController _titleController = TextEditingController();
@@ -71,7 +71,7 @@ class _OutGoingActivityWritePageState extends State<OutGoingActivityWritePage>{
         child: Icon(Icons.send),
         onPressed: (){
           if(_selectedCategory != '분야 선택..' && _titleController.text.isNotEmpty && _contentController.text.isNotEmpty){
-            FirebaseFirestore.instance.collection('activities').add({
+            FirebaseFirestore.instance.collection('activity').add({
               'category': _selectedCategory,
               'title': _titleController.text,
               'content': _contentController.text,

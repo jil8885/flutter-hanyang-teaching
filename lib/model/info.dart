@@ -1,5 +1,6 @@
 import 'package:flutter_hanyang_teaching/model/college.dart';
 import 'package:flutter_hanyang_teaching/model/major.dart';
+import 'package:flutter_hanyang_teaching/model/circle.dart';
 
 class InfoModel {
   List<Map> getAllMajor() => _collegeInfo;
@@ -27,6 +28,24 @@ class InfoModel {
         .where((element) => element.name == major)
         .map((e) => e.circles)
         .expand((element) => element)
+        .map((e) => Circle.fromJson(e))
+        .map((e) => e.name)
+        .toList();
+    return circlesInMajor;
+  }
+
+  getCircleDescriptionByMajor(String college, String major) {
+    var circlesInMajor = _collegeInfo
+        .map((e) => College.fromJson(e))
+        .where((element) => element.college == college)
+        .map((e) => e.majors)
+        .expand((element) => element)
+        .map((e) => Major.fromJson(e))
+        .where((element) => element.name == major)
+        .map((e) => e.circles)
+        .expand((element) => element)
+        .map((e) => Circle.fromJson(e))
+        .map((e) => e.description)
         .toList();
     return circlesInMajor;
   }

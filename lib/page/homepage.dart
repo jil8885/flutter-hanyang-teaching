@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hanyang_teaching/page/certReviewPage.dart';
 import 'package:flutter_hanyang_teaching/page/clubInfopagestart.dart';
 import 'package:flutter_hanyang_teaching/page/majorinfostart.dart';
 import 'package:flutter_hanyang_teaching/page/outgoingactivitypage.dart';
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                 createGridItem(
                     '중앙동아리', Colors.orange[300], Icons.group, ClubInfoPage()),
                 createGridItem(
-                    '자격증', Colors.pink, Icons.credit_card, MajorInfoStart()),
+                    '자격증', Colors.pink, Icons.credit_card, CertPage()),
               ],
             ),
           )),

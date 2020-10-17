@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CircleReviewWritePage extends StatefulWidget {
-  CircleReviewWritePage(this.major);
-  final String major;
+  CircleReviewWritePage(this.name);
+  final String name;
   @override
-  State<StatefulWidget> createState() => _CircleReviewWritePageState(major);
+  State<StatefulWidget> createState() => _CircleReviewWritePageState(name);
 }
 
 class _CircleReviewWritePageState extends State<CircleReviewWritePage> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
-  TextEditingController _subjectController = TextEditingController();
-  _CircleReviewWritePageState(this.major);
-  final String major;
+  _CircleReviewWritePageState(this.name);
+  final String name;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("전공 과목 후기 작성"),
+        title: Text("학회 후기 작성"),
       ),
       body: Container(
         child: Column(
@@ -32,17 +31,6 @@ class _CircleReviewWritePageState extends State<CircleReviewWritePage> {
                   labelText: '제목',
                 ),
                 controller: _titleController,
-              ),
-            ),
-            Container(
-              height: 90,
-              padding: EdgeInsets.all(10),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: '과목',
-                ),
-                controller: _subjectController,
               ),
             ),
             Expanded(
@@ -65,18 +53,15 @@ class _CircleReviewWritePageState extends State<CircleReviewWritePage> {
         child: Icon(Icons.send),
         onPressed: () {
           if (_titleController.text.isNotEmpty &&
-              _contentController.text.isNotEmpty &&
-              _subjectController.text.isNotEmpty) {
-            FirebaseFirestore.instance.collection('class').add({
-              'major': major,
+              _contentController.text.isNotEmpty) {
+            FirebaseFirestore.instance.collection('circles').add({
+              'name': name,
               'title': _titleController.text,
-              'content': _contentController.text,
-              'subject': _subjectController.text,
+              'contents': _contentController.text,
               'date': Timestamp.now(),
             });
             _titleController.clear();
             _contentController.clear();
-            _subjectController.clear();
           }
         },
       ),

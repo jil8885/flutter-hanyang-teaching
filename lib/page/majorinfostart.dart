@@ -104,6 +104,7 @@ class _MajorInfoStartState extends State<MajorInfoStart>{
 
   void _onSelectedMajor(String value){
     setState(() {
+      print(value);
       _selectedMajor = value;
     });
   }
